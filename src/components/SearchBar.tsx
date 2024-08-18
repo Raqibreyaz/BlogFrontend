@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, SetStateAction, useCallback, memo } from "react";
 
-const SearchBar: React.FC = () => {
-  const [query, setQuery] = useState('');
+type paramType = React.Dispatch<React.SetStateAction<string>>
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
+const SearchBar = memo(({ setSearch }:{setSearch:paramType}) => {
+  const [query, setQuery] = useState("");
 
-  const handleClear = () => {
-    setQuery('');
-  };
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.target.value);
+    },
+    []
+  );
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Handle the search logic here
-    console.log('Search query:', query);
-  };
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setSearch(query);
+    },
+    []
+  );
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center bg-white rounded-full shadow-md p-2 w-full max-w-md mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center bg-gray-200 rounded-full shadow-md p-2 w-full max-w-md mx-auto mb-6"
+    >
       <input
         type="text"
         value={query}
@@ -29,9 +35,9 @@ const SearchBar: React.FC = () => {
       {query && (
         <button
           type="button"
-          onClick={handleClear}
+          onClick={() => setQuery("")}
           aria-label="Clear search"
-          className="text-gray-500 hover:text-gray-700 focus:outline-none"
+          className="text-gray-500 text-xl hover:text-gray-700 focus:outline-none"
         >
           &times;
         </button>
@@ -45,6 +51,5 @@ const SearchBar: React.FC = () => {
       </button>
     </form>
   );
-};
-
+});
 export default SearchBar;

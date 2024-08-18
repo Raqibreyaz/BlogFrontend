@@ -5,7 +5,9 @@ function App() {
   return (
     <div>
       <Navbar />
-      <Outlet />
+      <div className="py-6">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

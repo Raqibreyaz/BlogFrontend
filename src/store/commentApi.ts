@@ -1,42 +1,59 @@
 // src/store/commentApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Response } from "../interfaces/response.interfaces";
 
 interface Comment {
-  id: string;
+  _id: string;
   content: string;
   postId: string;
   createdBy: string;
+  createdAt: string;
 }
 
 interface CreateCommentRequest {
-  content: string;
+  postId: string;
+  data: {
+    content: string;
+    postId: string;
+  };
+}
+
+interface GetCommentsRequest {
+  page?: number;
+  limit?: number;
   postId: string;
 }
 
-interface CreateCommentResponse {
-  success: boolean;
-  message: string;
-  comment: Comment;
-}
-
-interface GetCommentsResponse {
-  success: boolean;
+interface GetCommentsResponse extends Response {
   comments: Comment[];
 }
 
 export const commentApi = createApi({
-  reducerPath: 'commentApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_BACKEND_URL, credentials: 'include' }),
+  reducerPath: "commentApi",
+  tagTypes: ["Comments"],
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/comments`,
+    credentials: "include",
+  }),
   endpoints: (builder) => ({
-    createComment: builder.mutation<CreateCommentResponse, CreateCommentRequest>({
-      query: (data) => ({
-        url: 'create-comment',
-        method: 'POST',
+    createComment: builder.mutation<Response, CreateCommentRequest>({
+      query: ({ postId, data }) => ({
+        url: `/create-comment/${postId}`,
+        method: "POST",
         body: data,
       }),
+      invalidatesTags: (result, error, { postId }) => [
+        { type: "Comments", id: postId },
+      ],
     }),
-    getComments: builder.query<GetCommentsResponse, string>({
-      query: (postId) => `get-comments/${postId}`,
+    getComments: builder.query<GetCommentsResponse, GetCommentsRequest>({
+      query: ({ postId, page = 1, limit = 10 }) => ({
+        url: `/get-comments/${postId}?page=${page}&&limit=${limit}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, { postId }) => [
+        { type: "Comments", id: postId },
+      ],
     }),
   }),
 });

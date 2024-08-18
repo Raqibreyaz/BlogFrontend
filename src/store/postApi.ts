@@ -1,91 +1,75 @@
 // src/store/postApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Response } from "../interfaces/response.interfaces";
+import { Post } from "../interfaces/post.interfaces";
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  image?: string;
-  createdBy: string;
-}
-
-interface CreatePostRequest {
-  title: string;
-  content: string;
-  image?: string;
-}
-
-interface UpdatePostRequest {
-  id: string;
-  title?: string;
-  content?: string;
-  image?: string;
-}
-
-interface CreatePostResponse {
-  success: boolean;
-  message: string;
+interface GetPostResponse extends Response {
   post: Post;
 }
 
-interface UpdatePostResponse {
-  success: boolean;
-  message: string;
-  post: Post;
+interface GetPostsRequests {
+  page?: number;
+  limit?: number;
+  search?: string;
 }
 
-interface GetPostResponse {
-  success: boolean;
-  post: Post;
-}
-
-interface GetPostsResponse {
-  success: boolean;
+interface GetPostsResponse extends Response {
   posts: Post[];
-}
-
-interface DeletePostResponse {
-  success: boolean;
-  message: string;
+  totalPages: number;
 }
 
 export const postApi = createApi({
-  reducerPath: 'postApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_BACKEND_URL, credentials: 'include' }),
+  reducerPath: "postApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${import.meta.env.VITE_BACKEND_URL}/posts`,
+    credentials: "include",
+  }),
+  tagTypes: ["Posts", "Post"],
   endpoints: (builder) => ({
-    createPost: builder.mutation<CreatePostResponse, CreatePostRequest>({
+    createPost: builder.mutation<Response, FormData>({
       query: (data) => ({
-        url: 'create-post',
-        method: 'POST',
+        url: "/",
+        method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Posts"],
     }),
-    updatePost: builder.mutation<UpdatePostResponse, UpdatePostRequest>({
-      query: (data) => ({
-        url: `update-post/${data.id}`,
-        method: 'PUT',
+    updatePost: builder.mutation<Response, { id: string; data: FormData }>({
+      query: ({ id, data }) => ({
+        url: `/${id}`,
+        method: "PUT",
         body: data,
       }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
     getPost: builder.query<GetPostResponse, string>({
-      query: (id) => `get-post/${id}`,
-    }),
-    getPosts: builder.query<GetPostsResponse, void>({
-      query: () => 'get-posts',
-    }),
-    deletePost: builder.mutation<DeletePostResponse, string>({
       query: (id) => ({
-        url: `delete-post/${id}`,
-        method: 'DELETE',
+        url: `/${id}`,
+        method: "GET",
       }),
+      providesTags: (result, error, id) => [{ type: "Post", id }],
+    }),
+    getPosts: builder.query<GetPostsResponse, GetPostsRequests>({
+      query: ({ search = "", page = 1, limit = 10 }) => ({
+        url: `?search=${search}&&page=${page}&&limit=${limit}`,
+        method: "GET",
+      }),
+      providesTags: ["Posts"],
+    }),
+    deletePost: builder.mutation<Response, string>({
+      query: (id) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Posts"],
     }),
   }),
 });
 
-export const { 
-  useCreatePostMutation, 
-  useUpdatePostMutation, 
-  useGetPostQuery, 
-  useGetPostsQuery, 
-  useDeletePostMutation 
+export const {
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useGetPostQuery,
+  useGetPostsQuery,
+  useDeletePostMutation,
 } = postApi;

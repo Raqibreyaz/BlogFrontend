@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Response } from "../interfaces/response.interfaces";
 
-interface response {
-  success: boolean;
-  message: string;
+interface GetUserResponse extends Response{
+  user:{email:string,username:string,image:string}
 }
 
 // Define a service using a base URL and expected endpoints
@@ -13,7 +13,7 @@ export const userApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    registerUser: builder.mutation<response, FormData>({
+    registerUser: builder.mutation<Response, FormData>({
       query: (data) => ({
         url: `register-user`,
         body: data,
@@ -21,7 +21,7 @@ export const userApi = createApi({
       }),
     }),
 
-    loginUser: builder.mutation<response, { email: string; password: string }>({
+    loginUser: builder.mutation<Response, { email: string; password: string }>({
       query: (data) => ({
         url: `login-user`,
         body: data,
@@ -29,7 +29,7 @@ export const userApi = createApi({
       }),
     }),
 
-    getUser: builder.query<response, void>({
+    getUser: builder.query<GetUserResponse, void>({
       query: () => ({
         url: `get-user`,
         method: "GET",
