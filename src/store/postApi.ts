@@ -26,6 +26,7 @@ export const postApi = createApi({
   }),
   tagTypes: ["Posts", "Post"],
   endpoints: (builder) => ({
+
     createPost: builder.mutation<Response, FormData>({
       query: (data) => ({
         url: "/",
@@ -34,6 +35,7 @@ export const postApi = createApi({
       }),
       invalidatesTags: ["Posts"],
     }),
+
     updatePost: builder.mutation<Response, { id: string; data: FormData }>({
       query: ({ id, data }) => ({
         url: `/${id}`,
@@ -42,6 +44,7 @@ export const postApi = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
+
     getPost: builder.query<GetPostResponse, string>({
       query: (id) => ({
         url: `/${id}`,
@@ -49,6 +52,7 @@ export const postApi = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Post", id }],
     }),
+
     getPosts: builder.query<GetPostsResponse, GetPostsRequests>({
       query: ({ search = "", page = 1, limit = 10 }) => ({
         url: `?search=${search}&&page=${page}&&limit=${limit}`,
@@ -56,6 +60,7 @@ export const postApi = createApi({
       }),
       providesTags: ["Posts"],
     }),
+
     deletePost: builder.mutation<Response, string>({
       query: (id) => ({
         url: `/${id}`,
@@ -64,6 +69,7 @@ export const postApi = createApi({
       invalidatesTags: ["Posts"],
     }),
   }),
+  
 });
 
 export const {

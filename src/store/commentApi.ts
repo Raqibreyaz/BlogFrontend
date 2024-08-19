@@ -6,7 +6,10 @@ interface Comment {
   _id: string;
   content: string;
   postId: string;
-  createdBy: string;
+  userDetails: {
+    username: string;
+    image: string;
+  };
   createdAt: string;
 }
 
@@ -14,7 +17,6 @@ interface CreateCommentRequest {
   postId: string;
   data: {
     content: string;
-    postId: string;
   };
 }
 
@@ -26,6 +28,8 @@ interface GetCommentsRequest {
 
 interface GetCommentsResponse extends Response {
   comments: Comment[];
+  totalComments: number;
+  totalPages: number;
 }
 
 export const commentApi = createApi({

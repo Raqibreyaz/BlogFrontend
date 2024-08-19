@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { useCreatePostMutation } from "../store/postApi";
 import { Container } from "../components";
 import { catchAndShowMessage } from "../utils/catchAndShowMessage";
 import { PostForm } from "../components";
 import { FormValues } from "../components/PostForm";
+import { useNavigate } from "react-router-dom";
 
 const AddPost: React.FC = () => {
-  const [CreatePost, { isLoading: isCreatingPost }] = useCreatePostMutation();
+  const [
+    CreatePost,
+    { isLoading: isCreatingPost, isSuccess: isSuccessfullyCreatedPost },
+  ] = useCreatePostMutation();
 
   const methods = useForm<FormValues>();
+  const Navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = useCallback((data) => {
     const formData = new FormData();
 
     (Object.keys(data) as (keyof FormValues)[]).forEach((key) => {
@@ -26,7 +31,11 @@ const AddPost: React.FC = () => {
     }
 
     catchAndShowMessage(CreatePost, formData);
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isSuccessfullyCreatedPost) Navigate("/");
+  }, [isSuccessfullyCreatedPost]);
 
   return (
     <Container

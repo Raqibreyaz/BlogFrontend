@@ -1,4 +1,4 @@
-import { useFormContext,Controller } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { FormValues } from "./PostForm";
 import { Editor } from "@tinymce/tinymce-react";
 
@@ -15,21 +15,41 @@ const TextEditor = () => {
         name="content"
         control={control}
         rules={{ required: "Content is required" }}
-        render={({ field }) => (
+        render={({ field: { value, onChange } }) => (
           <Editor
-            {...field}
-            apiKey={import.meta.env.VITE_TINYMCE_KEY} 
+            value={value}
+            apiKey={import.meta.env.VITE_TINYMCE_KEY}
             init={{
               height: 300,
               menubar: false,
-              plugins:
-                "advlist autolink lists link image charmap preview anchor textcolor",
+              plugins: [
+                "advlist",
+                "autolink",
+                "lists",
+                "link",
+                "image",
+                "charmap",
+                "preview",
+                "anchor",
+                "searchreplace",
+                "visualblocks",
+                "code",
+                "fullscreen",
+                "insertdatetime",
+                "media",
+                "table",
+                "code",
+                "help",
+                "wordcount",
+              ],
               toolbar:
                 "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
               content_style:
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
-            onEditorChange={(content) => field.onChange(content)}
+            onEditorChange={(content) => {
+              onChange(content);
+            }}
           />
         )}
       />

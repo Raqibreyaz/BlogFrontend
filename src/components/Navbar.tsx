@@ -1,15 +1,45 @@
-import React, { memo } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useGetUserQuery, useLogoutUserMutation } from "../store/userApi";
+import Container from "./Container";
+import { userApi } from "../store/userApi";
+import { useDispatch } from "react-redux";
+import { catchAndShowMessage } from "../utils/catchAndShowMessage";
 
 const Navbar = memo(() => {
-  const isLoggedIn = false;
-  const logout = () => {};
+  const {
+    data: { user } = {},
+    isLoading: isGettingUser,
+  } = useGetUserQuery();
+
+  const [
+    LogoutUser,
+    { isLoading: isLoggingOutUser, isSuccess: isSuccessfullyLogoutUser },
+  ] = useLogoutUserMutation();
+
+  const logout = useCallback(() => {
+    catchAndShowMessage(LogoutUser);
+  }, []);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("user logged out", isSuccessfullyLogoutUser);
+    if (isSuccessfullyLogoutUser) {
+      console.log("refecthing");
+      dispatch(userApi.util.resetApiState());
+    }
+  }, [isSuccessfullyLogoutUser]);
+
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
+    <Container
+      className="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50"
+      RenderingConditions={[!isGettingUser]}
+    >
       <div className="text-3xl font-bold">
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive ? "text-yellow-300" : "")}
+          className={({ isActive }) => (isActive ? "text-white-300" : "")}
         >
           My Blog
         </NavLink>
@@ -25,7 +55,7 @@ const Navbar = memo(() => {
         >
           Home
         </NavLink>
-        {isLoggedIn ? (
+        {user ? (
           <>
             <NavLink
               to="/add-post"
@@ -54,7 +84,7 @@ const Navbar = memo(() => {
               Login
             </NavLink>
             <NavLink
-              to="/signup"
+              to="/register"
               className={({ isActive }) =>
                 isActive
                   ? "text-yellow-300 hover:text-yellow-300"
@@ -66,7 +96,7 @@ const Navbar = memo(() => {
           </>
         )}
       </div>
-    </nav>
+    </Container>
   );
 });
 

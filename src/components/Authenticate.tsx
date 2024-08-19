@@ -5,7 +5,7 @@ import { Login, NotFoundPage } from "../pages";
 
 interface AuthenticattionProps {
   children: ReactNode;
-  authState: boolean;
+  authState?: boolean;
   allowed?: boolean;
 }
 
@@ -17,15 +17,14 @@ const Authenticate: React.FC<AuthenticattionProps> = ({
   const { data: { user } = {}, isLoading: isGettingUser } = useGetUserQuery();
 
   const isAuthenticated = !!user;
-
-  const RenderingCode = useCallback(() => {
+  
+  const RenderingCode = () => {
     if (!allowed && authState !== isAuthenticated) {
       return isAuthenticated ? <NotFoundPage /> : <Login />;
     } else {
       return <div>{children}</div>;
     }
-  }, [isAuthenticated]);
-
+  };
   return (
     <Container LoadingConditions={[isGettingUser]}>
       {!isGettingUser && <RenderingCode />}

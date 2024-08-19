@@ -5,7 +5,16 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-import { AddPost, EditPost, Home, Login, PostDetails, Register } from "./pages/index";
+import {
+  AddPost,
+  EditPost,
+  Home,
+  Login,
+  NotFoundPage,
+  PostDetails,
+  Register,
+} from "./pages/index";
+import Authenticate from "./components/Authenticate.tsx";
 
 const router = createBrowserRouter([
   {
@@ -13,28 +22,56 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "",
-        element: <Home />,
+        path: "/",
+        element: (
+          <Authenticate allowed={true}>
+            <Home />,
+          </Authenticate>
+        ),
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <Authenticate authState={false}>
+            <Login />,
+          </Authenticate>
+        ),
       },
       {
         path: "/register",
-        element: <Register />,
+        element: (
+          <Authenticate authState={false}>
+            <Register />,
+          </Authenticate>
+        ),
       },
       {
         path: "add-post",
-        element: <AddPost />,
+        element: (
+          <Authenticate authState={true}>
+            <AddPost />,
+          </Authenticate>
+        ),
       },
       {
         path: "edit-post/:id",
-        element: <EditPost />,
+        element: (
+          <Authenticate authState={true}>
+            <EditPost />,
+          </Authenticate>
+        ),
       },
       {
         path: "post-details/:id",
-        element: <PostDetails />,
+        element: (
+          <Authenticate allowed={true}>
+            <PostDetails />,
+          </Authenticate>
+        ),
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />
       },
     ],
   },

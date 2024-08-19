@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { userApi } from "./userApi";
 import { postApi } from "./postApi";
 import { commentApi } from "./commentApi";
+import { setupListeners } from "@reduxjs/toolkit/query";
 
 export const store = configureStore({
   reducer: {
@@ -19,3 +20,8 @@ export const store = configureStore({
       commentApi.middleware
     ),
 });
+
+// enable listener behavior for the store
+setupListeners(store.dispatch)
+
+export type RootState = ReturnType<typeof store.getState>

@@ -28,6 +28,7 @@ const PostCard = memo(({ title, creator, createdAt, image, _id }: Post) => {
 const PostsList = memo(({ posts }: { posts: Post[] }) => {
   return (
     <Container
+    className="space-y-3"
     >
       {posts.map((post) => (
         <PostCard key={post._id} {...post} />

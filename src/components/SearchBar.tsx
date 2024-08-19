@@ -1,8 +1,8 @@
-import React, { useState, SetStateAction, useCallback, memo } from "react";
+import React, { useState, useCallback, memo } from "react";
 
-type paramType = React.Dispatch<React.SetStateAction<string>>
+type paramType = React.Dispatch<React.SetStateAction<string>>;
 
-const SearchBar = memo(({ setSearch }:{setSearch:paramType}) => {
+const SearchBar = memo(({ setSearch }: { setSearch: paramType }) => {
   const [query, setQuery] = useState("");
 
   const handleInputChange = useCallback(
@@ -17,7 +17,7 @@ const SearchBar = memo(({ setSearch }:{setSearch:paramType}) => {
       event.preventDefault();
       setSearch(query);
     },
-    []
+    [query]
   );
 
   return (

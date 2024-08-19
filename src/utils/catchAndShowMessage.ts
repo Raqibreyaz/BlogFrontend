@@ -1,26 +1,44 @@
 import { showMessage } from "./showMessage";
 
 interface typeError extends Error {
-  response: {
+  data?: {
+    message?: string;
+  };
+  response?: {
     data: {
       message: string;
     };
   };
+  error?: string;
 }
 
-type dataType = FormData | string | object;
+type dataType = FormData | string | object | undefined;
 
-export const catchAndShowMessage = async (fn:Function, data:dataType) => {
+export const catchAndShowMessage = async (fn: Function, data?: dataType) => {
   try {
     const response = await fn(data).unwrap();
-    showMessage("Success", response.data.message, "success");
+
+    showMessage(
+      "Success",
+      response.data?.message || response.message,
+      "success"
+    );
   } catch (error) {
     const customError = error as typeError;
+    console.log(error);
+
+    let message: string = "";
+
     if (
       customError.response &&
       customError.response.data &&
       customError.response.data.message
     )
-      showMessage("Error", customError.response.data.message, "error");
+      message = customError.response?.data.message;
+    else if (customError.data && customError.data.message)
+      message = customError.data.message;
+    else if (customError.error) message = customError.error;
+
+    showMessage("Error", message, "error");
   }
 };

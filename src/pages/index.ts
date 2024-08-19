@@ -5,6 +5,7 @@ import PostDetails from "./PostDetails";
 import Register from "./Register";
 import Login from "./Login";
 import NotFoundPage from "./NotFoundPage";
+import CommentSection from "../components/CommentSection";
 
 export {
     Home,
@@ -13,5 +14,6 @@ export {
     PostDetails,
     Register,
     Login,
-    NotFoundPage
+    NotFoundPage,
+    CommentSection
 }

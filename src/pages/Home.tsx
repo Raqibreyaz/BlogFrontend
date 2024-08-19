@@ -20,14 +20,13 @@ const Home = memo(() => {
 
   return (
     <Container
-      RenderingConditions={[posts.length > 0]}
       LoadingConditions={[isLoadingPosts]}
       backUpElem={
         <h1 className="text-4xl font-semibold  text-center">No Posts Found</h1>
       }
     >
-      <div>
-        <SearchBar setSearch={setSearch}/>
+      <SearchBar setSearch={setSearch} />
+      <div className="space-y-5">
         <PostsList posts={posts} />
         <Pagination
           totalPages={totalPages}
