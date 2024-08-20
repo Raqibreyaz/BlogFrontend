@@ -42,7 +42,7 @@ export const postApi = createApi({
         method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+      invalidatesTags: (_1, _, { id }) => [{ type: "Post", id }],
     }),
 
     getPost: builder.query<GetPostResponse, string>({
@@ -50,7 +50,7 @@ export const postApi = createApi({
         url: `/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Post", id }],
+      providesTags: (_1, _, id) => [{ type: "Post", id }],
     }),
 
     getPosts: builder.query<GetPostsResponse, GetPostsRequests>({

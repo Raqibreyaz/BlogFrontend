@@ -10,7 +10,7 @@ const CommentSection: React.FC = () => {
   const [page, setPage] = useState(1);
 
   const {
-    data: { comments, totalComments, totalPages } = {},
+    data: { comments, totalPages } = {},
     isLoading: isLoadingComments,
   } = useGetCommentsQuery({ postId, page, limit: 10 });
 

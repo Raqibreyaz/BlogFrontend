@@ -24,7 +24,7 @@ const Navbar = memo(() => {
 
   const [
     LogoutUser,
-    { isLoading: isLoggingOutUser, isSuccess: isSuccessfullyLogoutUser },
+    {  isSuccess: isSuccessfullyLogoutUser },
   ] = useLogoutUserMutation();
 
   const logout = useCallback(() => {
@@ -40,7 +40,6 @@ const Navbar = memo(() => {
       Navigate("/");
     }
   }, [isSuccessfullyLogoutUser]);
-  console.log("rendering navbar");
 
   return (
     <Container

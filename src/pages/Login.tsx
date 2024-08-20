@@ -4,7 +4,6 @@ import { catchAndShowMessage } from "../utils/catchAndShowMessage";
 import {
   useGetUserQuery,
   useLoginUserMutation,
-  userApi,
 } from "../store/userApi";
 import { useNavigate } from "react-router-dom";
 
@@ -43,12 +42,10 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (isSuccessfullyLoggedIn) {
-      console.log("successfully logged in");
       refetch();
       Navigate("/");
     }
   }, [isSuccessfullyLoggedIn, Navigate, refetch]);
-  console.log("login rendered");
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">

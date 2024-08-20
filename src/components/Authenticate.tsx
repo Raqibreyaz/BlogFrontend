@@ -23,7 +23,6 @@ const Authenticate: React.FC<AuthenticattionProps> = ({
   const isAuthenticated = !!user;
 
   const RenderingCode = useCallback(() => {
-    console.log(user);
     if (!allowed && authState !== isAuthenticated) {
       return isAuthenticated ? <NotFoundPage /> : <Login />;
     } else {

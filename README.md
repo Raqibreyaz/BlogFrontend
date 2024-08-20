@@ -1,5 +1,7 @@
 # MyBlog - Frontend
 
+[Deployed_Link](https://my-blog-raqib.netlify.app)
+
 MyBlog is a full-stack blogging application where users can register, log in, view posts by pagination, add posts, edit posts, comment on posts, and view comments by pagination. This repository contains the frontend of the application, built with React and Redux Toolkit.
 
 ## Features
@@ -29,4 +31,14 @@ MyBlog is a full-stack blogging application where users can register, log in, vi
    cd frontend-repo
 
 2. **Install the dependencies**:
+   ```bash
     npm install
+
+3. **Create a .env file in the root directory and add the following variables**
+   ```bash
+   VITE_BACKEND_URL=your-backend-url
+   VITE_TINYMCE_KEY=tinymce-key-for-text-editor
+
+4. **This frontend works in conjunction with the Nodejs backend. For backend setup and more**:
+   ```bash
+   visit [Backend Repository](https://github.com/Raqibreyaz/BlogFrontend.git)

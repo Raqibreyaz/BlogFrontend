@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import { useGetUserQuery, useRegisterUserMutation } from "../store/userApi";
+import {  useRegisterUserMutation } from "../store/userApi";
 import { catchAndShowMessage } from "../utils/catchAndShowMessage";
 import { Container, FilePreviewInput } from "../components";
 import { useNavigate } from "react-router-dom";
@@ -55,7 +55,6 @@ const RegistrationForm: React.FC = () => {
       Navigate("/");
     }
   }, [isSuccessfullyRegistered]);
-console.log('rendering register');
 
   return (
     <Container className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">

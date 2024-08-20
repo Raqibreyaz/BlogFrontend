@@ -46,7 +46,7 @@ export const commentApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: (result, error, { postId }) => [
+      invalidatesTags: (_1, _, { postId }) => [
         { type: "Comments", id: postId },
       ],
     }),
@@ -55,7 +55,7 @@ export const commentApi = createApi({
         url: `/get-comments/${postId}?page=${page}&&limit=${limit}`,
         method: "GET",
       }),
-      providesTags: (result, error, { postId }) => [
+      providesTags: (_1, _, { postId }) => [
         { type: "Comments", id: postId },
       ],
     }),
