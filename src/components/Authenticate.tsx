@@ -14,17 +14,23 @@ const Authenticate: React.FC<AuthenticattionProps> = ({
   authState = false,
   allowed = false,
 }) => {
-  const { data: { user } = {}, isLoading: isGettingUser } = useGetUserQuery();
+
+  const {
+    data: { user } = {},
+    isLoading: isGettingUser,
+  } = useGetUserQuery();
 
   const isAuthenticated = !!user;
-  
-  const RenderingCode = () => {
+
+  const RenderingCode = useCallback(() => {
+    console.log(user);
     if (!allowed && authState !== isAuthenticated) {
       return isAuthenticated ? <NotFoundPage /> : <Login />;
     } else {
       return <div>{children}</div>;
     }
-  };
+  }, [user, isAuthenticated,children]);
+
   return (
     <Container LoadingConditions={[isGettingUser]}>
       {!isGettingUser && <RenderingCode />}

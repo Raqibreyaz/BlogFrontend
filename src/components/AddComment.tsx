@@ -37,23 +37,31 @@ const AddComment = memo(() => {
 
   return (
     <form className={!user ? "hidden" : ""}>
-      <div className="flex items-center space-x-4">
-        <img src={user?.image} alt="User" className="w-12 h-12 rounded-full" />
-        <input
-          type="text"
-          {...register("content", { required: "This Field is Required!!" })}
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          placeholder="Write a comment..."
+      <div className="flex items-start sm:gap-4 gap-2 ">
+        <img
+          src={user?.image}
+          alt="User"
+          className="size-12 max-sm:size-9 rounded-full"
         />
-        <button
-          onClick={handleSubmit(handleAddComment)}
-          disabled={
-            isSubmitting || Object.keys(errors).length > 0 || isCreatingComment
-          }
-          className="px-5 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        >
-          {isCreatingComment ? "Loading..." : "Comment"}
-        </button>
+        <div className="gap-4 max-sm:gap-2 flex w-[90%] max-sm:flex-col">
+          <input
+            type="text"
+            {...register("content", { required: "This Field is Required!!" })}
+            className="flex-1 sm:px-4 px-2 py-3 max-sm:py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 transition max-sm:placeholder:text-sm max-sm:w-full"
+            placeholder="Write a comment..."
+          />
+          <button
+            onClick={handleSubmit(handleAddComment)}
+            disabled={
+              isSubmitting ||
+              Object.keys(errors).length > 0 ||
+              isCreatingComment
+            }
+            className="px-5 max-sm:px-3 max-w-[50%] ml-auto py-2 max-sm:text-sm text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition "
+          >
+            {isCreatingComment ? "Loading..." : "Comment"}
+          </button>
+        </div>
       </div>
       {errors.content && (
         <span className="text-sm text-red-500">{errors.content?.message}</span>

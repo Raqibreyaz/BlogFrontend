@@ -18,14 +18,13 @@ export const catchAndShowMessage = async (fn: Function, data?: dataType) => {
   try {
     const response = await fn(data).unwrap();
 
-    showMessage(
-      "Success",
-      response.data?.message || response.message,
-      "success"
-    );
+    showMessage({
+      title: "Success",
+      message: response.data?.message || response.message,
+      icon: "success",
+    });
   } catch (error) {
     const customError = error as typeError;
-    console.log(error);
 
     let message: string = "";
 
@@ -39,6 +38,6 @@ export const catchAndShowMessage = async (fn: Function, data?: dataType) => {
       message = customError.data.message;
     else if (customError.error) message = customError.error;
 
-    showMessage("Error", message, "error");
+    showMessage({ title: "Error", message, icon: "error" });
   }
 };

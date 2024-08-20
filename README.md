@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# MyBlog - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MyBlog is a full-stack blogging application where users can register, log in, view posts by pagination, add posts, edit posts, comment on posts, and view comments by pagination. This repository contains the frontend of the application, built with React and Redux Toolkit.
 
-Currently, two official plugins are available:
+## Features
+- **User Authentication**: Users can register and log in to access the platform.
+- **Post Management**: Users can view posts, add new posts, and edit existing posts.
+- **Comments**: Users can comment on posts, and comments are displayed with pagination.
+- **Rich Text Editor**: Posts can be written with a WYSIWYG editor using TinyMCE.
+- **Pagination**: Both posts and comments are paginated for better user experience.
+- **State Management**: Handled by Redux Toolkit for efficient global state management.
+- **Form Handling**: Managed with React Hook Form for smooth and efficient form handling.
+- **Notifications**: Enhanced user interaction with SweetAlert2 for notifications and alerts.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **React**: v18.3.1
+- **Redux Toolkit**: v2.2.7
+- **React Hook Form**: v7.52.2
+- **TinyMCE**: v7.3.0
+- **SweetAlert2**: v11.12.4
+- **React Router DOM**: v6.26.1
+- **HTML Parsing**: Managed by `html-react-parser`
 
-## Expanding the ESLint configuration
+## Setup Instructions
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Clone the repository**:
+   ```bash
+   git clone [https://github.com/Raqibreyaz/BlogFrontend.git]
+   cd frontend-repo
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. **Install the dependencies**:
+    npm install

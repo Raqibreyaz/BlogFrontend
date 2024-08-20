@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { catchAndShowMessage } from "../utils/catchAndShowMessage";
-import { useGetUserQuery, useLoginUserMutation } from "../store/userApi";
+import {
+  useGetUserQuery,
+  useLoginUserMutation,
+  userApi,
+} from "../store/userApi";
 import { useNavigate } from "react-router-dom";
 
 type LoginFormValues = {
@@ -9,27 +13,28 @@ type LoginFormValues = {
   password: string;
 };
 
-const LoginForm: React.FC = () => {
+const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>();
 
-  // const { refetch } = useGetUserQuery();
-
   const [
     LoginUser,
     { isLoading: isLoggingUser, isSuccess: isSuccessfullyLoggedIn },
   ] = useLoginUserMutation();
 
+  const { refetch } = useGetUserQuery();
   const Navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<LoginFormValues> = useCallback((data) => {
-    console.log(data);
-    // Handle login logic here
-    catchAndShowMessage(LoginUser, data);
-  }, []);
+  const onSubmit: SubmitHandler<LoginFormValues> = useCallback(
+    (data) => {
+      // Handle login logic here
+      catchAndShowMessage(LoginUser, data);
+    },
+    [LoginUser]
+  );
 
   const getLoginName = useCallback(
     (name: string) => name as keyof LoginFormValues,
@@ -38,12 +43,12 @@ const LoginForm: React.FC = () => {
 
   useEffect(() => {
     if (isSuccessfullyLoggedIn) {
-      console.log("logged in successfully");
-      // refetch();
+      console.log("successfully logged in");
+      refetch();
       Navigate("/");
     }
-  }, [isSuccessfullyLoggedIn]);
-console.log('hi rendering login form');
+  }, [isSuccessfullyLoggedIn, Navigate, refetch]);
+  console.log("login rendered");
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -105,4 +110,4 @@ console.log('hi rendering login form');
   );
 };
 
-export default LoginForm;
+export default Login;

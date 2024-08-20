@@ -18,7 +18,7 @@ const CommentSection: React.FC = () => {
     <Container
       LoadingConditions={[isLoadingComments]}
       RenderingConditions={[!!comments, totalPages !== undefined]}
-      className="max-w-2xl mx-auto p-6 space-y-6 bg-white shadow-md rounded-lg"
+      className="max-w-2xl mx-auto space-y-6 mt-6 rounded-lg"
     >
       {/* Input for creating a new comment */}
       <AddComment />
@@ -29,16 +29,17 @@ const CommentSection: React.FC = () => {
           {comments?.map((comment) => (
             <div
               key={comment._id}
-              className="flex items-start space-x-4 p-4 bg-gray-100 rounded-lg shadow-sm hover:shadow-md transition"
+              className="flex flex-wrap items-start space-x-4 p-4 max-sm:p-2 bg-gray-100 rounded-lg shadow-sm hover:shadow-md transition"
             >
               <img
                 src={comment.userDetails.image}
                 alt={comment.userDetails.username}
-                className="w-12 h-12 rounded-full"
+                className="size-8 sm:size-10 rounded-full"
               />
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-lg font-semibold">
+          
+              <div className="flex-1 leading-tight w-full max-sm:text-sm">
+                <div className="flex items-center justify-between leading-tight ">
+                  <h4 className="text-lg font-semibold capitalize">
                     {comment.userDetails.username}
                   </h4>
                   <span className="text-sm text-gray-400">

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Response } from "../interfaces/response.interfaces";
 
 interface GetUserResponse extends Response {
-  user: { email: string; username: string; image: string };
+  user: { email: string; username: string; image: string; _id: string };
 }
 
 // Define a service using a base URL and expected endpoints
@@ -54,5 +54,5 @@ export const {
   useGetUserQuery,
   useRegisterUserMutation,
   useLoginUserMutation,
-  useLogoutUserMutation
+  useLogoutUserMutation,
 } = userApi;

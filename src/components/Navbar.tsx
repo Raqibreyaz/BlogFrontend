@@ -1,16 +1,26 @@
 import { memo, useCallback, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, NavLinkRenderProps, useNavigate } from "react-router-dom";
 import { useGetUserQuery, useLogoutUserMutation } from "../store/userApi";
 import Container from "./Container";
 import { userApi } from "../store/userApi";
 import { useDispatch } from "react-redux";
 import { catchAndShowMessage } from "../utils/catchAndShowMessage";
 
+const applyClass = ({
+  active,
+  inActive,
+  common = "",
+}: {
+  active: string;
+  inActive: string;
+  common?: string;
+}) => {
+  return ({ isActive }: NavLinkRenderProps) =>
+    `${isActive ? active : inActive} ${common}`;
+};
+
 const Navbar = memo(() => {
-  const {
-    data: { user } = {},
-    isLoading: isGettingUser,
-  } = useGetUserQuery();
+  const { data: { user } = {}, isLoading: isGettingUser } = useGetUserQuery();
 
   const [
     LogoutUser,
@@ -22,21 +32,22 @@ const Navbar = memo(() => {
   }, []);
 
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
   useEffect(() => {
-    console.log("user logged out", isSuccessfullyLogoutUser);
     if (isSuccessfullyLogoutUser) {
-      console.log("refecthing");
       dispatch(userApi.util.resetApiState());
+      Navigate("/");
     }
   }, [isSuccessfullyLogoutUser]);
+  console.log("rendering navbar");
 
   return (
     <Container
-      className="bg-gray-900 text-white p-4 flex justify-between items-center sticky top-0 z-50"
+      className="bg-gray-900 text-white sm:p-4 max-sm:py-4 max-sm:px-2 flex justify-between items-center sticky top-0 z-50"
       RenderingConditions={[!isGettingUser]}
     >
-      <div className="text-3xl font-bold">
+      <div className="text-3xl max-sm:text-xl font-bold">
         <NavLink
           to="/"
           className={({ isActive }) => (isActive ? "text-white-300" : "")}
@@ -44,56 +55,56 @@ const Navbar = memo(() => {
           My Blog
         </NavLink>
       </div>
-      <div className="flex space-x-4">
+      <div className="flex sm:space-x-4 gap-2 items-center  max-sm:text-sm">
         <NavLink
           to="/"
-          className={({ isActive }) =>
-            isActive
-              ? "text-yellow-300 hover:text-yellow-300"
-              : "hover:text-yellow-300"
-          }
+          className={applyClass({
+            active:
+              "text-yellow-300 hover:text-yellow-300 bg-pink-800 px-2 py-1 rounded-md",
+            inActive: "hover:text-yellow-300",
+            common:"capitalize"
+          })}
         >
           Home
         </NavLink>
-        {user ? (
-          <>
-            <NavLink
-              to="/add-post"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-yellow-300 hover:text-yellow-300"
-                  : "hover:text-yellow-300"
-              }
-            >
-              Add Post
-            </NavLink>
-            <button onClick={logout} className="hover:text-yellow-300">
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-yellow-300 hover:text-yellow-300"
-                  : "hover:text-yellow-300"
-              }
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/register"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-yellow-300 hover:text-yellow-300"
-                  : "hover:text-yellow-300"
-              }
-            >
-              Signup
-            </NavLink>
-          </>
+
+        {[
+          {
+            to: "/login",
+            name: "login",
+            protected: false,
+          },
+          {
+            to: "/register",
+            name: "signup",
+            protected: false,
+          },
+          {
+            to: "/add-post",
+            name: "add post",
+            protected: true,
+          },
+        ].map((props) => (
+          <NavLink
+            to={props.to}
+            key={props.name}
+            className={applyClass({
+              active:
+                "text-yellow-300 hover:text-yellow-300 bg-pink-800 rounded px-2 py-1",
+              inActive: "hover:text-yellow-300",
+              common: `text-white capitalize ${
+                props.protected !== !!user ? "hidden" : ""
+              }`,
+            })}
+          >
+            {props.name}
+          </NavLink>
+        ))}
+
+        {user && (
+          <button onClick={logout} className="hover:text-yellow-300">
+            Logout
+          </button>
         )}
       </div>
     </Container>

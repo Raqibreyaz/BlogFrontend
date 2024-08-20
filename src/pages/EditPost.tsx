@@ -33,10 +33,6 @@ const EditPost: React.FC = () => {
         );
     });
 
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     catchAndShowMessage(UpdatePost, { id: postId, data: formData });
   }, []);
 

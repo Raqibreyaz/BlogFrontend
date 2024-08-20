@@ -4,7 +4,6 @@ import { useFormContext } from "react-hook-form";
 interface FileInputTypes {
   label: string;
   name: string;
-  cond: object;
   props: object;
   image?: string;
 }
@@ -12,7 +11,6 @@ interface FileInputTypes {
 const FilePreviewInput: React.FC<FileInputTypes> = ({
   label,
   name,
-  cond,
   props,
   image,
 }) => {
@@ -71,7 +69,9 @@ const FilePreviewInput: React.FC<FileInputTypes> = ({
           {label}
         </label>
         <input
-          {...register(name, { ...cond })}
+          {...register(name, {
+            required: imagePreview ? false : "image is required",
+          })}
           {...props}
           type="file"
           className={`mt-1 p-2 block placeholder:capitalize w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 ${

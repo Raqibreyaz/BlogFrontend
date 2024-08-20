@@ -20,15 +20,12 @@ const AddPost: React.FC = () => {
     const formData = new FormData();
 
     (Object.keys(data) as (keyof FormValues)[]).forEach((key) => {
-      formData.append(
-        key,
-        data[key] instanceof FileList ? data[key][0] : data[key]
-      );
+      if (data[key])
+        formData.append(
+          key,
+          data[key] instanceof FileList ? data[key][0] : data[key]
+        );
     });
-
-    for (const [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
 
     catchAndShowMessage(CreatePost, formData);
   }, []);
@@ -39,14 +36,13 @@ const AddPost: React.FC = () => {
 
   return (
     <Container
-      LoadingConditions={[isCreatingPost]}
-      className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg"
+      className="max-w-xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-300"
     >
       <h2 className="text-2xl font-semibold mb-6 text-center capitalize">
         Create a Post
       </h2>
       <FormProvider {...methods}>
-        <PostForm onSubmit={onSubmit} />
+        <PostForm onSubmit={onSubmit} loading={isCreatingPost}/>
       </FormProvider>
     </Container>
   );

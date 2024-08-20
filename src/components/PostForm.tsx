@@ -11,17 +11,16 @@ export type FormValues = {
 
 interface MyFormComponentProps {
   onSubmit: SubmitHandler<FormValues>;
-  isUpdating?: boolean;
-  image?:string;
+  image?: string;
   loading: boolean;
 }
 
 const PostForm: React.FC<MyFormComponentProps> = memo(
-  ({ isUpdating, onSubmit, loading,image }) => {
+  ({ onSubmit, loading, image }) => {
     const {
       register,
       handleSubmit,
-      formState: { errors },
+      formState: { errors, isDirty },
     } = useFormContext<FormValues>();
 
     return (
@@ -29,7 +28,6 @@ const PostForm: React.FC<MyFormComponentProps> = memo(
         <FilePreviewInput
           label="Image"
           name="image"
-          cond={{ required: isUpdating ? false : "Image is required" }}
           image={image}
           props={{ accept: "image/*" }}
         />
@@ -59,7 +57,9 @@ const PostForm: React.FC<MyFormComponentProps> = memo(
         <button
           type="submit"
           disabled={!!loading || Object.keys(errors).length > 0}
-          className="w-full px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className={`${
+            isDirty ? "" : "hidden"
+          } w-full px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500`}
         >
           {loading ? "Loading..." : "Submit"}
         </button>
