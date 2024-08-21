@@ -40,5 +40,24 @@ MyBlog is a full-stack blogging application where users can register, log in, vi
    VITE_TINYMCE_KEY=tinymce-key-for-text-editor
 
 4. **This frontend works in conjunction with the Nodejs backend. For backend setup and more**:
-   ```bash
    visit [Backend Repository](https://github.com/Raqibreyaz/BlogFrontend.git)
+
+## How To Use
+
+1. **Create an Account in the registration form or Login to an Existing One**
+
+2. **You Can View All Posts on the Home Page**
+
+3. **Use the Pagination feature to switch pages for different Posts**
+
+4. **By Clicking on a Post You can view its content , comments and add new comment too**
+
+5. **Using pagination feature you can switch between comments pages**
+
+6. **Using the Add Post Navbar Link you can add a new post just by  giving the image, title, and its content**
+
+7. **In the post details page  you can also edit and delete your post**
+
+8. **By Clicking on the  pencil icon you can edit your post**
+
+9. **By Clicking on the trash icon you can delete your post**
