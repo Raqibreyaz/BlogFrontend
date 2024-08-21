@@ -10,7 +10,7 @@ const Home = memo(() => {
   const { data, isLoading: isLoadingPosts } = useGetPostsQuery({
     page,
     search,
-    limit: 10,
+    limit: 5,
   });
 
   // posts
