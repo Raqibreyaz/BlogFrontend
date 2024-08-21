@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
-import {  useRegisterUserMutation } from "../store/userApi";
+import {  useGetUserQuery, useRegisterUserMutation } from "../store/userApi";
 import { catchAndShowMessage } from "../utils/catchAndShowMessage";
 import { Container, FilePreviewInput } from "../components";
 import { useNavigate } from "react-router-dom";
@@ -48,10 +48,13 @@ const RegistrationForm: React.FC = () => {
     []
   );
 
+  const {refetch} = useGetUserQuery()
+
   const Navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccessfullyRegistered) {
+      refetch()
       Navigate("/");
     }
   }, [isSuccessfullyRegistered]);
